@@ -73,7 +73,7 @@ def pregunta_03():
     # Importe Pipeline
     # Importe OneHotEncoder
     import numpy as np
-    from sklearn.compose import ColumnTransformer
+    from sklearn.compose import make_column_transformer
     from sklearn.compose import make_column_selector
     from sklearn.feature_selection import SelectKBest
     from sklearn.feature_selection import f_regression
