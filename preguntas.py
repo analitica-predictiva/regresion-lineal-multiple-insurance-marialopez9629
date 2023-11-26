@@ -82,30 +82,32 @@ def pregunta_03():
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import OneHotEncoder
 
-    columnTransformer = ColumnTransformer(
-        transformers=[
-            (
-                "ohe",
-                OneHotEncoder(drop="if_binary"),
-                make_column_selector(dtype_include=object),
-            ),
-        ],
-        remainder="passthrough",
-    )
-
-    selectKBest=SelectKBest(score_func=f_regression)
-
     pipeline = Pipeline(
         steps=[
             # Paso 1: Construya un column_transformer que aplica OneHotEncoder a las
             # variables categóricas, y no aplica ninguna transformación al resto de
             # las variables.
-            ("column_transformer",columnTransformer),
+            (
+                "column_transfomer",
+                make_column_transformer(
+                    (
+                        OneHotEncoder(),
+                        ["sex","smoker","region"],
+                    ),
+                    remainder="passthrough",
+                ),
+            ),
             # Paso 2: Construya un selector de características que seleccione las K
             # características más importantes. Utilice la función f_regression.
-            ("selectKBest",selectKBest),
+            (
+                "selectKBest",
+                SelectKBest(score_func=f_regression),
+            ),
             # Paso 3: Construya un modelo de regresión lineal.
-            ("linearregression",LinearRegression())
+            (
+                "LR",
+                LinearRegression(),
+            ),
         ],
     )
 
